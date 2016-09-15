@@ -12,36 +12,36 @@ declare module 'recompose' {
   type ValidationMap<Props> = __React.ValidationMap<Props>
   type ComponentType<Props> = ComponentClass<Props> | StatelessComponent<Props>
 
-  type ComponentDecorator<Props, OwnProps> =
-    (component: ComponentType<Props>) => ComponentClass<OwnProps>
+  type ComponentDecorator<Props, OwnerProps> =
+    (component: ComponentType<Props>) => ComponentClass<OwnerProps>
 
   type InferableComponentDecorator =
     <Props, ComponentConstruct extends (ComponentType<Props>)>(component: ComponentConstruct) => ComponentConstruct
 
-  export function mapProps<Props, OwnProps>(
-    propsMapper: (props: Props) => OwnProps
+  export function mapProps<Props, OwnerProps>(
+    propsMapper: (props: Props) => OwnerProps
   ): (component: ComponentType<Props>) => ComponentType<Props>
 
-  export function withProps<Props, OwnProps>(
-    createProps: (props: Props) => Props & OwnProps | OwnProps
+  export function withProps<Props, OwnerProps>(
+    createProps: ((props: Props) => Props & OwnerProps | OwnerProps) | Object
   ): (component: ComponentType<Props>) => ComponentType<Props>
 
-  export function withPropsOnChange<Props, OwnProps>(
+  export function withPropsOnChange<Props, OwnerProps>(
     shouldMapOrKeys: string[] | ((props: Props, nextProps: Props) => boolean),
-    createProps: (props: Props) => Props & OwnProps | OwnProps
-  ): ComponentDecorator<Props, Props & OwnProps>
+    createProps: (props: Props) => Props & OwnerProps | OwnerProps
+  ): ComponentDecorator<Props, Props & OwnerProps>
 
-  export function withPropsOnChange<Props, OwnProps>(
-    createProps: (props: Props) => Props & OwnProps | OwnProps
-  ): ComponentDecorator<Props, Props & OwnProps>
+  export function withPropsOnChange<Props, OwnerProps>(
+    createProps: (props: Props) => Props & OwnerProps | OwnerProps
+  ): ComponentDecorator<Props, Props & OwnerProps>
 
   export function withHandlers<Props, NextProps>(
     handlerCreators: { [handlerName: string]: (props: Props) => Function }
   ): ComponentDecorator<Props, NextProps>
 
-  export function defaultProps<Props, OwnProps>(
+  export function defaultProps<Props, OwnerProps>(
     props: Props
-  ): ComponentDecorator<Props, OwnProps>
+  ): ComponentDecorator<Props, OwnerProps>
 
   export function renameProp(
     oldName: string,
@@ -60,11 +60,11 @@ declare module 'recompose' {
     propName: string
   ): InferableComponentDecorator
 
-  export function withState<Props, OwnProps>(
+  export function withState<Props, OwnerProps>(
     stateName: string,
     stateUpdaterName: string,
-    initialState: (props: Object) => any | any
-  ): ComponentDecorator<Props, OwnProps>
+    initialState: ((props: Object) => any) | any
+  ): ComponentDecorator<Props, OwnerProps>
 
   export function withReducer<State, Action>(
     stateName: string,
@@ -79,10 +79,16 @@ declare module 'recompose' {
     right: any
   ): InferableComponentDecorator
 
-  export function withContext<ContextProps, ComponentOwnProps>(
+  export function withContext<ContextProps, ComponentOwnerProps>(
     childContextTypes: ValidationMap<ContextProps>,
-    getChildContext: (props: ComponentOwnProps) => any
+    getChildContext: (props: ComponentOwnerProps) => any
   ): InferableComponentDecorator
+
+  export function renderComponent<Props>(
+    Component: ComponentType<Props>
+  ): InferableComponentDecorator
+
+  export function renderNothing(): InferableComponentDecorator
 
   export function getContext<Props, ContextProps>(
     contextTypes: ValidationMap<ContextProps>
@@ -98,9 +104,9 @@ declare module 'recompose' {
 
   export function onlyUpdateForPropTypes(): InferableComponentDecorator
 
-  export function setPropTypes<OwnProps>(
-      propTypes: ValidationMap<OwnProps>
-  ): ComponentDecorator<{}, OwnProps>
+  export function setPropTypes<OwnerProps>(
+      propTypes: ValidationMap<OwnerProps>
+  ): ComponentDecorator<{}, OwnerProps>
 
   export function componentFromProp<Props>(
     propName: string
