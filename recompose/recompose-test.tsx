@@ -9,6 +9,10 @@ interface IProps {
   foo: 'bar';
 }
 
+interface IContextProps {
+  ping: 'pong';
+}
+
 const Stateless = (props: IProps) => <div />
 
 class Stateful extends React.Component<IProps, {}> {
@@ -53,6 +57,61 @@ class Stateful extends React.Component<IProps, {}> {
 
   r.renderComponent(Component)
 
-  r.renderNothing()
+  r.renderNothing(Component)
 
+  r.shouldUpdate((props: IProps, nextProps: IProps) => false)(Component)
+
+  r.pure(Component)
+
+  r.onlyUpdateForKeys(['foo'])(Component)
+
+  r.onlyUpdateForPropTypes(Component)
+
+  r.withContext({ ping: 'pong' }, (props: IProps) => { foo: 'bar' })
+
+  r.getContext({ ping: 'pong' })
+
+  r.setStatic('biz', 'baz')(Component)
+
+  r.setPropTypes({ ping: 'pong' })(Component)
+
+  r.setDisplayName('MyComponent')(Component)
+
+  r.compose(
+    () => {},
+    () => {}
+  )(Component)
+
+  r.getDisplayName(Component)
+
+  r.wrapDisplayName(Component, 'foo')
+
+  r.shallowEqual({}, {})
+
+  r.isClassComponent(Component)
+
+  r.createEagerElement(Component, {}, <div />)
+
+  r.createEagerFactory(Component)
+
+  r.createSink(() => {})
+
+  r.componentFromProp('component')
+
+  r.nest(
+    Component,
+    (props: any) => <span />,
+    (props: any) => <a />
+  )
+
+  r.hoistStatics(Component)
+
+  r.componentFromStream((props: any) => <div />)
+
+  r.mapPropsStream(
+    (props: any) => ({}),
+    Component
+  )
+
+  r.createEventHandler()
 })
